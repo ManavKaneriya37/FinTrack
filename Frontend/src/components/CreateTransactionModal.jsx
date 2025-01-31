@@ -45,7 +45,6 @@ const CreateTransactoinModal = ({ tag = "Transaction" }) => {
     }
   }, [selectedProject]);
 
-  console.log(fetchedProject);
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -72,9 +71,7 @@ const CreateTransactoinModal = ({ tag = "Transaction" }) => {
         console.error(error);
       });
   };
-
-  console.log(fetchedProject);
-
+  
   return (
     <>
       <button

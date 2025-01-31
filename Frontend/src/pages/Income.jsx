@@ -9,7 +9,35 @@ const Income = () => {
   const [incomes, setIncomes] = useState([]);
   const [incomesTotal, setIncomesTotal] = useState(0);
   const [incomeMenu, setIncomeMenu] = useState(false);
+  const [filteredIncomes, setFilteredIncomes] = useState([]);
+  const [incomeCategoryMenu,setIncomeCategoryMenu] = useState(false)
+  const [searchIncome,setSearchIncome] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const panelRef = useRef();
+  const categoriesRef = useRef();
+
+  useEffect(() => {
+      if (selectedCategory) {
+        setFilteredIncomes(incomes.filter((income) => income.category === selectedCategory))
+      } else {
+        setFilteredIncomes(incomes);
+      }
+    }, [selectedCategory, incomes]);
+  
+    useEffect(() => {
+      if (searchIncome) {
+        setFilteredIncomes(incomes.filter((income) => income.tag.toLowerCase().startsWith(searchIncome.toLowerCase())));
+      } else {
+        setFilteredIncomes(incomes);
+      }
+    }, [searchIncome, incomes]);
+
+    useEffect(() => {
+      if (filteredIncomes.length > 0) {
+        setIncomesTotal(filteredIncomes.reduce((acc, income) => acc + income.amount,
+      0))
+      }
+    }, [filteredIncomes])
 
   useGSAP(
     function () {
@@ -22,6 +50,18 @@ const Income = () => {
       }
     },
     [incomeMenu]
+  );
+  useGSAP(
+    function () {
+      if (incomeCategoryMenu) {
+        gsap.fromTo(
+          categoriesRef.current,
+          { opacity: 0, left: "-45px" },
+          { opacity: 1, left: "0", duration: 0.2, scrub: true }
+        );
+      }
+    },
+    [incomeCategoryMenu]
   );
 
   useEffect(() => {
@@ -97,9 +137,53 @@ const Income = () => {
           ₹{incomesTotal || 0}
         </h1>
       </div>
-      <div className="h-full relative">
-        {incomes && incomes.length > 0 ? (
-          incomes.map((income) => (
+      <div className="h-fit py-5 relative">
+      <section className="sort flex items-center gap-3 mb-5">
+          <button
+            className="bg-zinc-500 hover:bg-zinc-500/70 duration-100 text-white px-5 py-1 rounded"
+            onClick={() => setIncomeCategoryMenu(!incomeCategoryMenu)}
+          >
+            Sort
+          </button>
+          <input 
+          className="w-full bg-zinc-100/60 py-1 px-2 outline-neutral-300 rounded"
+          placeholder="Search Expense"
+          value={searchIncome}
+          onChange={e => setSearchIncome(e.target.value)}
+          />
+          {incomeCategoryMenu && (
+            <div ref={categoriesRef} className="absolute top-14 z-20 opacity-0 bg-white shadow-md rounded mt-2">
+              <ul>
+                <li
+                  className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setIncomeCategoryMenu(false);
+                  }}
+                >
+                  None
+                </li>
+                {incomes
+                  .map((income) => income.category)
+                  .filter((category, index, self) => category && self.indexOf(category) === index)
+                  .map((category, index) => (
+                    <li
+                      key={index}
+                      className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        setIncomeCategoryMenu(false);
+                      }}
+                    >
+                      {category}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+        </section>
+        {filteredIncomes && filteredIncomes.length > 0 ? (
+          filteredIncomes.map((income) => (
             <div
               className={`bg-gray-100/50 my-2 w-full text-emerald-500 relative flex items-center justify-between px-5 py-2 rounded`}
             >
@@ -110,8 +194,9 @@ const Income = () => {
                 <div>{income?.tag}</div>
               </div>
 
-              <div className="text-center opacity-60 text-gray-500/70">
-                {income?.date?.split("T")[0]}
+              <div className="text-center opacity-60 text-gray-500/70 flex flex-col text-sm">
+              <p className="italic text-xs">{income?.createdAt?.split("T")[0]}</p>
+              <p>{income?.category}</p>
               </div>
               <div className={`flex items-center gap-3`}>
                 <div className="">₹{income.amount}</div>

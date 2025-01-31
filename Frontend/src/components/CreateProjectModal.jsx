@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 const CreateProjectModal = ({handler, ref}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,13 +44,6 @@ const CreateProjectModal = ({handler, ref}) => {
                 placeholder="Description"
                 type="text"
                 name="description"
-              />
-              <input
-                autoComplete="off"
-                className="bg-neutral-100/60 rounded-md py-2 px-2 w-auto mx-6 relative"
-                placeholder="Budget"
-                type="number"
-                name="budget"
               />
               <button
                 type="submit"

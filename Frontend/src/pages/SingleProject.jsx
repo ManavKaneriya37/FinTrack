@@ -9,7 +9,7 @@ const SingleProject = () => {
   const [expenses, setExpenses] = useState([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
-  const sortOptionsRef = useRef(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -35,7 +35,6 @@ const Projects = () => {
     const projectData = {
       name: formData.name,
       description: formData.description,
-      budget: formData.budget,
       userId: user._id,
     };
     axios

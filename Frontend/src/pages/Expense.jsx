@@ -7,10 +7,40 @@ import { useGSAP } from "@gsap/react";
 const Expense = () => {
   const [user, setUser] = useState(null);
   const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [expensesTotal, setExpensesTotal] = useState(0);
   const [expenseMenu, setExpenseMenu] = useState(false);
-  const panelRef = useRef();
+  const [expenseCategoryMenu, setExpenseCategoryMenu] = useState(false);
 
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchExpense, setSearchExpense] = useState(null);
+  const panelRef = useRef();
+  const categoriesRef = useRef();
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setFilteredExpenses(expenses.filter((expense) => expense.category === selectedCategory));
+    } else {
+      setFilteredExpenses(expenses);
+    }
+  }, [selectedCategory, expenses]);
+
+  useEffect(() => {
+    if (searchExpense) {
+      setFilteredExpenses(expenses.filter((expense) => expense.tag.toLowerCase().startsWith(searchExpense.toLowerCase())));
+    } else {
+      setFilteredExpenses(expenses);
+    }
+  }, [searchExpense, expenses]);
+
+  useEffect(() => {
+        if (filteredExpenses.length > 0) {
+          setExpensesTotal(filteredExpenses.reduce((acc, expense) => acc + expense.amount,
+        0))
+        }
+      }, [filteredExpenses])
+
+  
   useGSAP(
     function () {
       if (expenseMenu) {
@@ -23,6 +53,20 @@ const Expense = () => {
     },
     [expenseMenu]
   );
+
+  useGSAP(
+    function () {
+      if (expenseCategoryMenu) {
+        gsap.fromTo(
+          categoriesRef.current,
+          { opacity: 0, left: "-45px" },
+          { opacity: 1, left: "0", duration: 0.2, scrub: true }
+        );
+      }
+    },
+    [expenseCategoryMenu]
+  );
+
 
   useEffect(() => {
     axios
@@ -97,10 +141,54 @@ const Expense = () => {
           ₹{expensesTotal}
         </h1>
       </div>
-      <div className="h-full relative">
-        {expenses && expenses.length > 0 ? (
-          expenses.map((expense) => (
+      <div className="h-fit py-5 relative">
+        <section className="sort flex items-center gap-3 mb-5">
+          <button
+            className="bg-zinc-500 hover:bg-zinc-500/70 duration-100 text-white px-5 py-1 rounded"
+            onClick={() => setExpenseCategoryMenu(!expenseCategoryMenu)}
+          >
+            Sort
+          </button>
+          <input 
+          className="w-full bg-zinc-100/60 py-1 px-2 outline-neutral-300 rounded"
+          placeholder="Search Expense"
+          value={searchExpense}
+          onChange={e => setSearchExpense(e.target.value)}
+          />
+          {expenseCategoryMenu && (
+            <div ref={categoriesRef} className="absolute top-14 z-20 opacity-0 bg-white shadow-md rounded mt-2">
+              <ul>
+                <li
+                  className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setExpenseCategoryMenu(false);
+                  }}
+                >
+                  None
+                </li>
+                {expenses
+                  .filter((expense) => expense.category)
+                  .map((expense, index) => (
+                    <li
+                      key={index}
+                      className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                      onClick={() => {
+                        setSelectedCategory(expense.category);
+                        setExpenseCategoryMenu(false);
+                      }}
+                    >
+                      {expense.category}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+        </section>
+        {filteredExpenses && filteredExpenses.length > 0 ? (
+          filteredExpenses.map((expense) => (
             <div
+              key={expense._id}
               className={`bg-gray-100/50 my-2 w-full text-rose-400 relative flex items-center justify-between px-5 py-2 rounded`}
             >
               <div className="flex flex-col gap-2 w-1/4">
@@ -110,8 +198,9 @@ const Expense = () => {
                 <div>{expense?.tag}</div>
               </div>
 
-              <div className="text-center opacity-60 text-gray-500/70">
-                {expense?.date?.split("T")[0]}
+              <div className="text-center opacity-60 text-gray-500/70 text-sm">
+                <p className="italic text-xs">{expense?.createdAt?.split("T")[0]}</p>
+                <p>{expense?.category}</p>
               </div>
               <div className={`flex items-center gap-3`}>
                 <div className="">₹{expense.amount}</div>
