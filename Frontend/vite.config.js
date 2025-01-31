@@ -19,6 +19,9 @@ export default defineConfig(({ mode }) => {
     base: '/',  // Set the correct base path
   build: {
     outDir: 'dist'
+  },
+    server: {
+    historyApiFallback: true // Ensures correct handling of client-side routing
   }
   }
 })
