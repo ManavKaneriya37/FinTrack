@@ -19,7 +19,9 @@ const Expense = () => {
 
   useEffect(() => {
     if (selectedCategory) {
-      setFilteredExpenses(expenses.filter((expense) => expense.category === selectedCategory));
+      setFilteredExpenses(
+        expenses.filter((expense) => expense.category === selectedCategory)
+      );
     } else {
       setFilteredExpenses(expenses);
     }
@@ -27,20 +29,24 @@ const Expense = () => {
 
   useEffect(() => {
     if (searchExpense) {
-      setFilteredExpenses(expenses.filter((expense) => expense.tag.toLowerCase().startsWith(searchExpense.toLowerCase())));
+      setFilteredExpenses(
+        expenses.filter((expense) =>
+          expense.tag.toLowerCase().startsWith(searchExpense.toLowerCase())
+        )
+      );
     } else {
       setFilteredExpenses(expenses);
     }
   }, [searchExpense, expenses]);
 
   useEffect(() => {
-        if (filteredExpenses.length > 0) {
-          setExpensesTotal(filteredExpenses.reduce((acc, expense) => acc + expense.amount,
-        0))
-        }
-      }, [filteredExpenses])
+    if (filteredExpenses.length > 0) {
+      setExpensesTotal(
+        filteredExpenses.reduce((acc, expense) => acc + expense.amount, 0)
+      );
+    }
+  }, [filteredExpenses]);
 
-  
   useGSAP(
     function () {
       if (expenseMenu) {
@@ -66,7 +72,6 @@ const Expense = () => {
     },
     [expenseCategoryMenu]
   );
-
 
   useEffect(() => {
     axios
@@ -119,7 +124,7 @@ const Expense = () => {
 
   const handleExpenseDelete = (expense) => {
     axios
-      .post(`/api/expenses/delete`, {
+      .post(`${import.meta.env.VITE_API_URL}/api/expenses/delete`, {
         id: expense._id,
       })
       .then((response) => {
@@ -137,54 +142,57 @@ const Expense = () => {
       <CreateTransactionModal tag="expense" />
       <div className="my-5">
         <h1 className="text-2xl text-center">Total Expenses</h1>
-        <h1 className="text-3xl text-center text-rose-400">
-          ₹{expensesTotal}
-        </h1>
+        <h1 className="text-3xl text-center text-rose-400">₹{expensesTotal}</h1>
       </div>
       <div className="h-fit py-5 relative">
-        <section className="sort flex items-center gap-3 mb-5">
-          <button
-            className="bg-zinc-500 hover:bg-zinc-500/70 duration-100 text-white px-5 py-1 rounded"
-            onClick={() => setExpenseCategoryMenu(!expenseCategoryMenu)}
-          >
-            Sort
-          </button>
-          <input 
-          className="w-full bg-zinc-100/60 py-1 px-2 outline-neutral-300 rounded"
-          placeholder="Search Expense"
-          value={searchExpense}
-          onChange={e => setSearchExpense(e.target.value)}
-          />
-          {expenseCategoryMenu && (
-            <div ref={categoriesRef} className="absolute top-14 z-20 opacity-0 bg-white shadow-md rounded mt-2">
-              <ul>
-                <li
-                  className="cursor-pointer p-2 hover:bg-gray-200 px-7"
-                  onClick={() => {
-                    setSelectedCategory(null);
-                    setExpenseCategoryMenu(false);
-                  }}
-                >
-                  None
-                </li>
-                {expenses
-                  .filter((expense) => expense.category)
-                  .map((expense, index) => (
-                    <li
-                      key={index}
-                      className="cursor-pointer p-2 hover:bg-gray-200 px-7"
-                      onClick={() => {
-                        setSelectedCategory(expense.category);
-                        setExpenseCategoryMenu(false);
-                      }}
-                    >
-                      {expense.category}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
-        </section>
+        {expenses.length > 0 && (
+          <section className="sort flex items-center gap-3 mb-5">
+            <button
+              className="bg-zinc-500 hover:bg-zinc-500/70 duration-100 text-white px-5 py-1 rounded"
+              onClick={() => setExpenseCategoryMenu(!expenseCategoryMenu)}
+            >
+              Sort
+            </button>
+            <input
+              className="w-full bg-zinc-100/60 py-1 px-2 outline-neutral-300 rounded"
+              placeholder="Search Expense"
+              value={searchExpense}
+              onChange={(e) => setSearchExpense(e.target.value)}
+            />
+            {expenseCategoryMenu && (
+              <div
+                ref={categoriesRef}
+                className="absolute top-14 z-20 opacity-0 bg-white shadow-md rounded mt-2"
+              >
+                <ul>
+                  <li
+                    className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                    onClick={() => {
+                      setSelectedCategory(null);
+                      setExpenseCategoryMenu(false);
+                    }}
+                  >
+                    None
+                  </li>
+                  {expenses
+                    .filter((expense) => expense.category)
+                    .map((expense, index) => (
+                      <li
+                        key={index}
+                        className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                        onClick={() => {
+                          setSelectedCategory(expense.category);
+                          setExpenseCategoryMenu(false);
+                        }}
+                      >
+                        {expense.category}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
         {filteredExpenses && filteredExpenses.length > 0 ? (
           filteredExpenses.map((expense) => (
             <div
@@ -193,20 +201,26 @@ const Expense = () => {
             >
               <div className="flex flex-col gap-2 w-1/4">
                 {expense?.project?.name && (
-                  <div className="text-xs text-gray-600 opacity-80">{expense?.project?.name}</div>
+                  <div className="text-xs text-gray-600 opacity-80">
+                    {expense?.project?.name}
+                  </div>
                 )}
                 <div>{expense?.tag}</div>
               </div>
 
               <div className="text-center opacity-60 text-gray-500/70 text-sm">
-                <p className="italic text-xs">{expense?.createdAt?.split("T")[0]}</p>
+                <p className="italic text-xs">
+                  {expense?.createdAt?.split("T")[0]}
+                </p>
                 <p>{expense?.category}</p>
               </div>
               <div className={`flex items-center gap-3`}>
                 <div className="">₹{expense.amount}</div>
                 <i
                   onClick={() =>
-                    setExpenseMenu(expenseMenu === expense._id ? null : expense._id)
+                    setExpenseMenu(
+                      expenseMenu === expense._id ? null : expense._id
+                    )
                   }
                   className="text-black cursor-pointer px-2 ri-more-2-fill"
                 ></i>

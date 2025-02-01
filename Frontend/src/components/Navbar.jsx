@@ -5,12 +5,15 @@ import axios from "axios";
 import { UserDataContext } from "../contexts/UserContext";
 import incomeImg from '../assets/income.png';
 import spendingImg from '../assets/spending.png';
+import Loading from "./Loading";
 
 const Navbar = () => {
   const { user } = useContext(UserDataContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
 
   const handleLogout = () => {
+    setLoading(true);
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/users/logout`, {
         headers: {
@@ -20,6 +23,8 @@ const Navbar = () => {
       .then((res) => {
         if (res.data.statusCode === 200) {
           localStorage.removeItem("token");
+          navigate("/login");
+          setLoading(false);
           window.location.reload();
         }
       })
@@ -106,6 +111,9 @@ const Navbar = () => {
           </NavLink>
         </div>
 
+      { loading ? (
+        <Loading loading={loading} />
+        ) : (
         <div>
           <button
             onClick={handleLogout}
@@ -115,6 +123,7 @@ const Navbar = () => {
             <h3>Logout</h3>
           </button>
         </div>
+        )}
       </div>
     </section>
   );

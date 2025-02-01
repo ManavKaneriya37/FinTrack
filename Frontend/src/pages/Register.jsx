@@ -2,35 +2,36 @@ import React, { useRef, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../contexts/UserContext";
+import Loading from "../components/Loading";
 
 const Register = () => {
   const formRef = useRef();
   const navigate = useNavigate();
   const { setUser } = useContext(UserDataContext);
+  const [loading, setLoading] = React.useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
     try {
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/users/register`,
-            formData,
-            { withCredentials: true } // ✅ Ensure credentials are sent
-        );
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/users/register`,
+        formData,
+        { withCredentials: true } // ✅ Ensure credentials are sent
+      );
 
-        console.log("✅ Response Data:", response.data); // Debugging
-
-        if (response.data.statusCode === 201) {
-            localStorage.setItem("token", response.data.store.token);
-            setUser(response.data.store.createdUser);
-            navigate("/");
-        }
+      if (response.data.statusCode === 201) {
+        localStorage.setItem("token", response.data.store.token);
+        setLoading(false);
+        setUser(response.data.store.createdUser);
+        navigate("/");
+      }
     } catch (error) {
-        console.error("❌ Registration Failed:", error);
+      console.error("❌ Registration Failed:", error);
     }
-};
-
+  };
 
   return (
     <>
@@ -47,58 +48,62 @@ const Register = () => {
           </div>
         </aside>
 
-        <section className="w-1/2 flex items-center justify-center">
-          <div className="h-fit w-[62%] p-4 py-12 rounded-xl bg-white shadow-lg shadow-black/50">
-            <h1 className="text-center text-3xl font-semibold mb-10">
-              Sign Up
-            </h1>
+        { loading ? (
+          <Loading loading={loading}/>
+          ) : (
+          <section className="w-1/2 flex items-center justify-center">
+            <div className="h-fit w-[62%] p-4 py-12 rounded-xl bg-white shadow-lg shadow-black/50">
+              <h1 className="text-center text-3xl font-semibold mb-10">
+                Sign Up
+              </h1>
 
-            <form
-              autoComplete="off"
-              ref={formRef}
-              onSubmit={handleRegister}
-              className="flex flex-col gap-4 my-4 px-5"
-            >
-              <input
-                type="text"
-                name="name"
+              <form
                 autoComplete="off"
-                placeholder="Name"
-                className="w-full p-2 rounded-md outline-none border-[1px] border-black/20"
-              />
-              <input
-                type="email"
-                name="email"
-                autoComplete="off"
-                placeholder="Email"
-                className="w-full p-2 rounded-md outline-none border-[1px] border-black/20"
-              />
-              <input
-                type="password"
-                name="password"
-                autoComplete="off"
-                placeholder="Password"
-                className="w-full p-2 rounded-md outline-none border-[1px] border-black/20"
-              />
-
-              <button
-                type="submit"
-                className="mx-5 py-2 text-white rounded-md bg-emerald-400 hover:bg-emerald-500 ease duration-75 block justify-self-end"
+                ref={formRef}
+                onSubmit={handleRegister}
+                className="flex flex-col gap-4 my-4 px-5"
               >
-                Create Account
-              </button>
-              <p className="text-center">
-                Already have an Account?{" "}
-                <span
-                  onClick={() => navigate("/login")}
-                  className="text-blue-500 underline cursor-pointer"
+                <input
+                  type="text"
+                  name="name"
+                  autoComplete="off"
+                  placeholder="Name"
+                  className="w-full p-2 rounded-md outline-none border-[1px] border-black/20"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  autoComplete="off"
+                  placeholder="Email"
+                  className="w-full p-2 rounded-md outline-none border-[1px] border-black/20"
+                />
+                <input
+                  type="password"
+                  name="password"
+                  autoComplete="off"
+                  placeholder="Password"
+                  className="w-full p-2 rounded-md outline-none border-[1px] border-black/20"
+                />
+
+                <button
+                  type="submit"
+                  className="mx-5 py-2 text-white rounded-md bg-emerald-400 hover:bg-emerald-500 ease duration-75 block justify-self-end"
                 >
-                  Login!
-                </span>
-              </p>
-            </form>
-          </div>
-        </section>
+                  Create Account
+                </button>
+                <p className="text-center">
+                  Already have an Account?{" "}
+                  <span
+                    onClick={() => navigate("/login")}
+                    className="text-blue-500 underline cursor-pointer"
+                  >
+                    Login!
+                  </span>
+                </p>
+              </form>
+            </div>
+          </section>
+        )}
       </div>
     </>
   );

@@ -10,34 +10,41 @@ const Income = () => {
   const [incomesTotal, setIncomesTotal] = useState(0);
   const [incomeMenu, setIncomeMenu] = useState(false);
   const [filteredIncomes, setFilteredIncomes] = useState([]);
-  const [incomeCategoryMenu,setIncomeCategoryMenu] = useState(false)
-  const [searchIncome,setSearchIncome] = useState(null)
-  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [incomeCategoryMenu, setIncomeCategoryMenu] = useState(false);
+  const [searchIncome, setSearchIncome] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const panelRef = useRef();
   const categoriesRef = useRef();
 
   useEffect(() => {
-      if (selectedCategory) {
-        setFilteredIncomes(incomes.filter((income) => income.category === selectedCategory))
-      } else {
-        setFilteredIncomes(incomes);
-      }
-    }, [selectedCategory, incomes]);
-  
-    useEffect(() => {
-      if (searchIncome) {
-        setFilteredIncomes(incomes.filter((income) => income.tag.toLowerCase().startsWith(searchIncome.toLowerCase())));
-      } else {
-        setFilteredIncomes(incomes);
-      }
-    }, [searchIncome, incomes]);
+    if (selectedCategory) {
+      setFilteredIncomes(
+        incomes.filter((income) => income.category === selectedCategory)
+      );
+    } else {
+      setFilteredIncomes(incomes);
+    }
+  }, [selectedCategory, incomes]);
 
-    useEffect(() => {
-      if (filteredIncomes.length > 0) {
-        setIncomesTotal(filteredIncomes.reduce((acc, income) => acc + income.amount,
-      0))
-      }
-    }, [filteredIncomes])
+  useEffect(() => {
+    if (searchIncome) {
+      setFilteredIncomes(
+        incomes.filter((income) =>
+          income.tag.toLowerCase().startsWith(searchIncome.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredIncomes(incomes);
+    }
+  }, [searchIncome, incomes]);
+
+  useEffect(() => {
+    if (filteredIncomes.length > 0) {
+      setIncomesTotal(
+        filteredIncomes.reduce((acc, income) => acc + income.amount, 0)
+      );
+    }
+  }, [filteredIncomes]);
 
   useGSAP(
     function () {
@@ -66,7 +73,7 @@ const Income = () => {
 
   useEffect(() => {
     axios
-      .get("/api/users/current-user", {
+      .get(`${import.meta.env.VITE_API_URL}/api/users/current-user`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -83,7 +90,7 @@ const Income = () => {
     if (user) {
       axios
         .post(
-          "/api/incomes/user/get-incomes",
+          `${import.meta.env.VITE_API_URL}/api/incomes/user/get-incomes`,
           {
             userId: user._id,
           },
@@ -101,7 +108,7 @@ const Income = () => {
         });
 
       axios
-        .post("/api/incomes/get-total", {
+        .post(`${import.meta.env.VITE_API_URL}/api/incomes/get-total`, {
           userId: user._id,
         })
         .then((response) => {
@@ -138,50 +145,58 @@ const Income = () => {
         </h1>
       </div>
       <div className="h-fit py-5 relative">
-      <section className="sort flex items-center gap-3 mb-5">
-          <button
-            className="bg-zinc-500 hover:bg-zinc-500/70 duration-100 text-white px-5 py-1 rounded"
-            onClick={() => setIncomeCategoryMenu(!incomeCategoryMenu)}
-          >
-            Sort
-          </button>
-          <input 
-          className="w-full bg-zinc-100/60 py-1 px-2 outline-neutral-300 rounded"
-          placeholder="Search Expense"
-          value={searchIncome}
-          onChange={e => setSearchIncome(e.target.value)}
-          />
-          {incomeCategoryMenu && (
-            <div ref={categoriesRef} className="absolute top-14 z-20 opacity-0 bg-white shadow-md rounded mt-2">
-              <ul>
-                <li
-                  className="cursor-pointer p-2 hover:bg-gray-200 px-7"
-                  onClick={() => {
-                    setSelectedCategory(null);
-                    setIncomeCategoryMenu(false);
-                  }}
-                >
-                  None
-                </li>
-                {incomes
-                  .map((income) => income.category)
-                  .filter((category, index, self) => category && self.indexOf(category) === index)
-                  .map((category, index) => (
-                    <li
-                      key={index}
-                      className="cursor-pointer p-2 hover:bg-gray-200 px-7"
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setIncomeCategoryMenu(false);
-                      }}
-                    >
-                      {category}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
-        </section>
+        {incomes.length > 0 && (
+          <section className="sort flex items-center gap-3 mb-5">
+            <button
+              className="bg-zinc-500 hover:bg-zinc-500/70 duration-100 text-white px-5 py-1 rounded"
+              onClick={() => setIncomeCategoryMenu(!incomeCategoryMenu)}
+            >
+              Sort
+            </button>
+            <input
+              className="w-full bg-zinc-100/60 py-1 px-2 outline-neutral-300 rounded"
+              placeholder="Search Expense"
+              value={searchIncome}
+              onChange={(e) => setSearchIncome(e.target.value)}
+            />
+            {incomeCategoryMenu && (
+              <div
+                ref={categoriesRef}
+                className="absolute top-14 z-20 opacity-0 bg-white shadow-md rounded mt-2"
+              >
+                <ul>
+                  <li
+                    className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                    onClick={() => {
+                      setSelectedCategory(null);
+                      setIncomeCategoryMenu(false);
+                    }}
+                  >
+                    None
+                  </li>
+                  {incomes
+                    .map((income) => income.category)
+                    .filter(
+                      (category, index, self) =>
+                        category && self.indexOf(category) === index
+                    )
+                    .map((category, index) => (
+                      <li
+                        key={index}
+                        className="cursor-pointer p-2 hover:bg-gray-200 px-7"
+                        onClick={() => {
+                          setSelectedCategory(category);
+                          setIncomeCategoryMenu(false);
+                        }}
+                      >
+                        {category}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
+          </section>
+        )}
         {filteredIncomes && filteredIncomes.length > 0 ? (
           filteredIncomes.map((income) => (
             <div
@@ -189,14 +204,18 @@ const Income = () => {
             >
               <div className="flex flex-col gap-2 w-1/4">
                 {income?.project?.name && (
-                  <div className="text-xs text-gray-600 opacity-80">{income?.project?.name}</div>
+                  <div className="text-xs text-gray-600 opacity-80">
+                    {income?.project?.name}
+                  </div>
                 )}
                 <div>{income?.tag}</div>
               </div>
 
               <div className="text-center opacity-60 text-gray-500/70 flex flex-col text-sm">
-              <p className="italic text-xs">{income?.createdAt?.split("T")[0]}</p>
-              <p>{income?.category}</p>
+                <p className="italic text-xs">
+                  {income?.createdAt?.split("T")[0]}
+                </p>
+                <p>{income?.category}</p>
               </div>
               <div className={`flex items-center gap-3`}>
                 <div className="">₹{income.amount}</div>

@@ -53,7 +53,7 @@ const SingleProject = () => {
 
     axios
       .post(
-        "/api/incomes/get-total",
+        `${import.meta.env.VITE_API_URL}/api/incomes/get-total`,
         { projectId: project._id },
         {
           headers: {
@@ -72,7 +72,7 @@ const SingleProject = () => {
 
     axios
       .post(
-        "/api/expenses/get-total",
+        `${import.meta.env.VITE_API_URL}/api/expenses/get-total`,
         { projectId: project._id },
         {
           headers: {

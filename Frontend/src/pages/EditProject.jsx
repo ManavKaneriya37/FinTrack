@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const EditProject = () => {
   const [projectData, setProjectData] = useState({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const { projectId } = useParams();
 
@@ -17,6 +19,7 @@ const EditProject = () => {
       })
       .then((response) => {
         setProjectData(response.data.store);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -30,11 +33,15 @@ const EditProject = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/projects/update`, projectData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_API_URL}/api/projects/update`,
+        projectData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data.store);
         navigate("/projects");
@@ -46,50 +53,54 @@ const EditProject = () => {
 
   return (
     <div className="home p-5 h-full w-full overflow-hidden relative">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white rounded px-8 pt-6 pb-8 mb-4"
-      >
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="username"
-          >
-            Project Name
-          </label>
-          <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            placeholder="Project name"
-            name="name"
-            value={projectData.name || ""}
-            onChange={handleProjectChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Description
-          </label>
-          <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            name="description"
-            placeholder="Description"
-            value={projectData.description || ""}
-            onChange={handleProjectChange}
-          />
-        </div>
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Save Changes
-          </button>
-        </div>
-      </form>
+      {loading ? (
+        <Loading loading={loading} />
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded px-8 pt-6 pb-8 mb-4"
+        >
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="username"
+            >
+              Project Name
+            </label>
+            <input
+              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              placeholder="Project name"
+              name="name"
+              value={projectData.name || ""}
+              onChange={handleProjectChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
+              Description
+            </label>
+            <input
+              className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              name="description"
+              placeholder="Description"
+              value={projectData.description || ""}
+              onChange={handleProjectChange}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

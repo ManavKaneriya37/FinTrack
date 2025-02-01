@@ -5,12 +5,15 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useNavigate } from "react-router-dom";
 import CreateProjectModal from "../components/CreateProjectModal";
+import Loading from "../components/Loading";
+
 
 const Projects = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [selectionMenu, setSelectionMenu] = useState(null);
   const createProjectFormRef = useRef();
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
 
   const { user } = useContext(UserDataContext);
@@ -31,6 +34,7 @@ const Projects = () => {
 
   const handleCreateProject = (e) => {
     e.preventDefault();
+    setLoading(true)
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const projectData = {
       name: formData.name,
@@ -46,6 +50,7 @@ const Projects = () => {
       .then((res) => {
         if (res.data.statusCode === 201) {
           setIsModalOpen(false);
+          setLoading(false);
           location.reload();
         }
       })
@@ -57,7 +62,7 @@ const Projects = () => {
   useEffect(() => {
     function fetchProjects() {
       axios
-        .get("/api/projects/get-all", {
+        .get(`${import.meta.env.VITE_API_URL}/api/projects/get-all`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -77,7 +82,7 @@ const Projects = () => {
 
   const goToProject = (projectId) => {
     axios
-      .get(`/api/projects/get/${projectId}`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/projects/get/${projectId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -97,7 +102,7 @@ const Projects = () => {
   const handleDeleteProject = (projectId) => {
     axios
       .post(
-        "/api/projects/delete",
+        `${import.meta.env.VITE_API_URL}/api/projects/delete`,
         { projectId },
         {
           headers: {
@@ -117,10 +122,14 @@ const Projects = () => {
 
   return (
     <div className="home p-5 h-full w-full overflow-hidden overflow-y-auto relative">
+      {loading ? (
+        <Loading loading={loading} />
+      ) : (
       <CreateProjectModal
         ref={createProjectFormRef}
         handler={handleCreateProject}
       />
+      )}
       <div>
         <div className="mt-3 flex flex-col gap-3">
           {projects && projects.length > 0 ? (
