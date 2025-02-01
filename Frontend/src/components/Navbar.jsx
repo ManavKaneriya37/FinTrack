@@ -21,12 +21,10 @@ const Navbar = () => {
         },
       })
       .then((res) => {
-        if (res.data.statusCode === 200) {
+           window.location.reload();
           localStorage.removeItem("token");
           navigate("/login");
           setLoading(false);
-          window.location.reload();
-        }
       })
       .catch((err) => {
         console.log(err);

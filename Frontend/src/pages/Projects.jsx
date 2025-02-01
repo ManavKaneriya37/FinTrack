@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import CreateProjectModal from "../components/CreateProjectModal";
 import Loading from "../components/Loading";
 
-
 const Projects = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [selectionMenu, setSelectionMenu] = useState(null);
   const createProjectFormRef = useRef();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [projectsLoading, setProjectsLoading] = useState(true);
   const navigate = useNavigate();
 
   const { user } = useContext(UserDataContext);
@@ -34,7 +34,7 @@ const Projects = () => {
 
   const handleCreateProject = (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const projectData = {
       name: formData.name,
@@ -42,11 +42,15 @@ const Projects = () => {
       userId: user._id,
     };
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/projects/create`, projectData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_API_URL}/api/projects/create`,
+        projectData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((res) => {
         if (res.data.statusCode === 201) {
           setIsModalOpen(false);
@@ -70,6 +74,7 @@ const Projects = () => {
         .then((res) => {
           if (res.data.statusCode === 200) {
             setProjects(res.data.store);
+            setProjectsLoading(false);
           }
         })
         .catch((err) => {
@@ -125,78 +130,82 @@ const Projects = () => {
       {loading ? (
         <Loading loading={loading} />
       ) : (
-      <CreateProjectModal
-        ref={createProjectFormRef}
-        handler={handleCreateProject}
-      />
+        <CreateProjectModal
+          ref={createProjectFormRef}
+          handler={handleCreateProject}
+        />
       )}
       <div>
-        <div className="mt-3 flex flex-col gap-3">
-          {projects && projects.length > 0 ? (
-            projects.map((project) => (
-              <div
-                key={project._id}
-                className="bg-neutral-100/40 hover:bg-neutral-100 ease duration-100 relative rounded-md p-2 flex items-center justify-between"
-              >
-                <h1
-                  onClick={() => goToProject(project._id)}
-                  className="text-lg w-1/6 cursor-pointer"
+        {projectsLoading ? (
+          <Loading loading={projectsLoading} />
+        ) : (
+          <div className="mt-3 flex flex-col gap-3">
+            {projects && projects.length > 0 ? (
+              projects.map((project) => (
+                <div
+                  key={project._id}
+                  className="bg-neutral-100/40 hover:bg-neutral-100 ease duration-100 relative rounded-md p-2 flex items-center justify-between"
                 >
-                  {project.name}
-                </h1>
-                <p className="text-sm opacity-55">
-                  {project.createdAt.split("T")[0]}
-                </p>
-                <span
-                  className="p-1"
-                  onClick={() =>
-                    setSelectionMenu(
-                      selectionMenu === project._id ? null : project._id
-                    )
-                  }
-                >
-                  <i className="ri-more-2-fill cursor-pointer"></i>
-                </span>
-                {selectionMenu === project._id && (
-                  <div
-                    ref={panelRef}
-                    className="absolute opacity-0 right-8 top-3"
+                  <h1
+                    onClick={() => goToProject(project._id)}
+                    className="text-lg w-1/6 cursor-pointer"
                   >
-                    <ul className="z-10 relative bg-white rounded-md p-2">
-                      <li
-                        onClick={() => goToProject(project._id)}
-                        className="hover:bg-neutral-100/60 text-blue-500 cursor-pointer p-2 px-4 text-sm shadow-sm flex items-center gap-2"
-                      >
-                        <i className="ri-arrow-right-up-line"></i>
-                        <p>Open</p>
-                      </li>
-                      <li
-                        onClick={() =>
-                          navigate(`/update-project/${project._id}`)
-                        }
-                        className="hover:bg-neutral-100/60 text-zinc-700 cursor-pointer p-1 px-4 text-sm shadow-sm flex items-center gap-2 "
-                      >
-                        <i className="ri-pencil-line text-lg"></i>
-                        <p>Edit</p>
-                      </li>
-                      <li
-                        onClick={() => handleDeleteProject(project._id)}
-                        className="hover:bg-neutral-100/60 text-rose-500 cursor-pointer p-2 px-4 text-sm shadow-sm flex items-center gap-2 "
-                      >
-                        <i className="ri-delete-bin-7-line"></i>
-                        <p>Delete</p>
-                      </li>
-                    </ul>
-                  </div>
-                )}
+                    {project.name}
+                  </h1>
+                  <p className="text-sm opacity-55">
+                    {project.createdAt.split("T")[0]}
+                  </p>
+                  <span
+                    className="p-1"
+                    onClick={() =>
+                      setSelectionMenu(
+                        selectionMenu === project._id ? null : project._id
+                      )
+                    }
+                  >
+                    <i className="ri-more-2-fill cursor-pointer"></i>
+                  </span>
+                  {selectionMenu === project._id && (
+                    <div
+                      ref={panelRef}
+                      className="absolute opacity-0 right-8 top-3"
+                    >
+                      <ul className="z-10 relative bg-white rounded-md p-2">
+                        <li
+                          onClick={() => goToProject(project._id)}
+                          className="hover:bg-neutral-100/60 text-blue-500 cursor-pointer p-2 px-4 text-sm shadow-sm flex items-center gap-2"
+                        >
+                          <i className="ri-arrow-right-up-line"></i>
+                          <p>Open</p>
+                        </li>
+                        <li
+                          onClick={() =>
+                            navigate(`/update-project/${project._id}`)
+                          }
+                          className="hover:bg-neutral-100/60 text-zinc-700 cursor-pointer p-1 px-4 text-sm shadow-sm flex items-center gap-2 "
+                        >
+                          <i className="ri-pencil-line text-lg"></i>
+                          <p>Edit</p>
+                        </li>
+                        <li
+                          onClick={() => handleDeleteProject(project._id)}
+                          className="hover:bg-neutral-100/60 text-rose-500 cursor-pointer p-2 px-4 text-sm shadow-sm flex items-center gap-2 "
+                        >
+                          <i className="ri-delete-bin-7-line"></i>
+                          <p>Delete</p>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="text-center text-lg p-2">
+                <h1>No projects yet</h1>
               </div>
-            ))
-          ) : (
-            <div className="text-center text-lg p-2">
-              <h1>No projects yet</h1>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
