@@ -12,18 +12,25 @@ const Register = () => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    const response = await axios.post("/api/users/register", formData, {
-      withCredentials: true, // Ensures cookies are sent and received
-  });
+    try {
+        const response = await axios.post(
+            "https://fintrack-bwr9.onrender.com/api/users/register",
+            formData,
+            { withCredentials: true } // ✅ Ensure credentials are sent
+        );
 
-    if (response.data.statusCode === 201) {
-      localStorage.setItem("token", response.data.store.token);
-      setUser(response.data.store.createdUser);
-      navigate("/");
+        console.log("✅ Response Data:", response.data); // Debugging
+
+        if (response.data.statusCode === 201) {
+            localStorage.setItem("token", response.data.store.token);
+            setUser(response.data.store.createdUser);
+            navigate("/");
+        }
+    } catch (error) {
+        console.error("❌ Registration Failed:", error);
     }
+};
 
-    formRef.current.reset();
-  };
 
   return (
     <>

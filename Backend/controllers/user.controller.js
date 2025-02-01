@@ -8,7 +8,7 @@ import ExpenseModel from "../models/expense.model.js";
 import bcrypt from "bcrypt";
 
 const registerUser = asyncHandler(async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const { name, email, password } = req.body;
 
   if ([name, email, password].some((field) => field?.trim() === "")) {
@@ -40,14 +40,16 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const token = await createdUser.generateAuthToken();
 
+  // Set token in cookie
   res.cookie("token", token, {
     httpOnly: true,
     secure: true,
     sameSite: "none",
   });
 
+  // ✅ Explicitly set the 201 status and send a response
   return res
-    .status(201)
+    .status(201) // Ensure status is explicitly set to 201
     .json(
       new ApiResponse(
         201,
@@ -56,6 +58,7 @@ const registerUser = asyncHandler(async (req, res) => {
       )
     );
 });
+
 
 const loginUser = asyncHandler(async (req, res) => {
   try {
