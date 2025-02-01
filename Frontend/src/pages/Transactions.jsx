@@ -28,7 +28,6 @@ const Transactions = () => {
     axios
       .get(
         `${import.meta.env.VITE_API_URL}/api/users/transactions/general`,
-        {},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
