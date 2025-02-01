@@ -14,7 +14,7 @@ const Register = () => {
 
     try {
         const response = await axios.post(
-            "https://fintrack-backend-959a.onrender.com/api/users/register",
+            `${import.meta.env.VITE_API_URL}/api/users/register`,
             formData,
             { withCredentials: true } // ✅ Ensure credentials are sent
         );
