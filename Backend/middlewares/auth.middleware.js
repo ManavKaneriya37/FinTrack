@@ -9,7 +9,7 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
         const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
         if(!token) {
-            throw new ApiError(401, 'Unauthorized reqest');
+            throw new ApiError(401, 'Unauthorized request');
         }
 
         const isBlackListed = await redisClient.get(token);
@@ -18,7 +18,12 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
             throw new ApiError(401, 'Unauthorized request');
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        } catch (error) {
+            throw new ApiError(401, 'Invalid token');
+        }
 
         const user = await UserModel.findById(decoded._id);
         if(!user) {
@@ -30,6 +35,6 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
         next();
 
     } catch (error) {
-        throw new ApiError(409, error.message)
+        throw new ApiError(409, error.message);
     }
 })

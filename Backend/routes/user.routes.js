@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express';
 import {
     registerUser, 
     loginUser, 
@@ -8,19 +8,53 @@ import {
     updateUser,
     getAllTransactions
 } from '../controllers/user.controller.js'
-import {verifyUser} from '../middlewares/auth.middleware.js'
+import { verifyUser } from '../middlewares/auth.middleware.js'
 
 const router = Router();
 
-router.route('/register', (req, res) => {
-    console.log("Request received")
-    console.log("Headers: ", req.headers)
-}).post(registerUser);
-router.route('/login').post(loginUser);
-router.route('/current-user').get(verifyUser, getCurrentUser);
-router.route('/logout').get(verifyUser, logoutUser)
-router.route('/transactions/general').get(verifyUser, getAllGeneralTransactions);
-router.route('/transactions/all').get(verifyUser, getAllTransactions);
-router.route('/update-profile').post(verifyUser, updateUser);
+// ✅ Check if Register Request is Reaching Backend
+router.post('/register', (req, res, next) => {
+    console.log("🚀 Incoming request to /api/users/register");
+    console.log("Headers:", req.headers);
+    console.log("Body:", req.body);
+    next(); // Pass control to the actual `registerUser` controller
+}, registerUser);
+
+// ✅ Check if Login Request is Reaching Backend
+router.post('/login', (req, res, next) => {
+    console.log("🚀 Incoming request to /api/users/login");
+    console.log("Headers:", req.headers);
+    console.log("Body:", req.body);
+    next();
+}, loginUser);
+
+// ✅ Check if Session is Working for Protected Routes
+router.get('/current-user', verifyUser, (req, res, next) => {
+    console.log("🔐 Protected route accessed: /api/users/current-user");
+    console.log("Session:", req.session);
+    console.log("Cookies:", req.cookies);
+    next();
+}, getCurrentUser);
+
+router.get('/logout', verifyUser, (req, res, next) => {
+    console.log("🔐 Logging out user...");
+    next();
+}, logoutUser);
+
+router.get('/transactions/general', verifyUser, (req, res, next) => {
+    console.log("🔐 Transactions Accessed");
+    next();
+}, getAllGeneralTransactions);
+
+router.get('/transactions/all', verifyUser, (req, res, next) => {
+    console.log("🔐 All Transactions Accessed");
+    next();
+}, getAllTransactions);
+
+router.post('/update-profile', verifyUser, (req, res, next) => {
+    console.log("🔄 Updating Profile");
+    console.log("Body:", req.body);
+    next();
+}, updateUser);
 
 export default router;
