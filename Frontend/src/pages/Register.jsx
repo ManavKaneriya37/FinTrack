@@ -14,7 +14,7 @@ const Register = () => {
 
     try {
         const response = await axios.post(
-            "https://fintrack-bwr9.onrender.com/api/users/register",
+            "https://fintrack-backend-959a.onrender.com/api/users/register",
             formData,
             { withCredentials: true } // ✅ Ensure credentials are sent
         );
