@@ -43,6 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
   res.cookie("token", token, {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   });
 
   return res
@@ -78,6 +79,7 @@ const loginUser = asyncHandler(async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
+      sameSite: "none",
     });
 
     return res

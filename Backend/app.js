@@ -5,6 +5,7 @@ dotenv.config();
 // Express setup
 import express from 'express';
 const app = express();
+import session from 'express-session';
 
 // Database connection
 import connectToDb from './Database/connect.js'
@@ -21,6 +22,17 @@ import incomeRoutes from './routes/income.routes.js'
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
+
+app.use(session({
+    secret: process.env.sessionKey,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: true, 
+        sameSite: "none"
+    }
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser());
