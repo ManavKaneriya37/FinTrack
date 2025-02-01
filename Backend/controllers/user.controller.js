@@ -125,14 +125,14 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getAllGeneralTransactions = asyncHandler(async (req, res) => {
   try {
     var transactions = [];
-    const incomes = await IncomeModel.find({ project: { $exists: false } });
+    const incomes = await IncomeModel.find({ user: req.user, project: { $exists: false } });
     const updatedIncomes = incomes.map((income) => ({
       ...income.toObject(),
       type: "income",
     }));
     transactions.push(...updatedIncomes);
 
-    const expenses = await ExpenseModel.find({ project: { $exists: false } });
+    const expenses = await ExpenseModel.find({user: req.user,  project: { $exists: false } });
     const updatedExpenses = expenses.map((expense) => ({
       ...expense.toObject(),
       type: "expense",
