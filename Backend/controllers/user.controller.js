@@ -8,6 +8,7 @@ import ExpenseModel from "../models/expense.model.js";
 import bcrypt from "bcrypt";
 
 const registerUser = asyncHandler(async (req, res) => {
+  console.log(req.body)
   const { name, email, password } = req.body;
 
   if ([name, email, password].some((field) => field?.trim() === "")) {
