@@ -5,12 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
+
   return {
     plugins: [react()],
-    base: '/', // Ensures proper path resolution
-    build: {
-      outDir: 'dist'
-    },
     server: {
       proxy: {
         '/api': {
@@ -19,7 +16,6 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
       },
-      historyApiFallback: true // Moved inside `server` to avoid duplication
     }
   };
 });

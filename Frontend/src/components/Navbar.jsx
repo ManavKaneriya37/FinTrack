@@ -3,6 +3,8 @@ import "remixicon/fonts/remixicon.css";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserDataContext } from "../contexts/UserContext";
+import incomeImg from '../assets/income.png';
+import spendingImg from '../assets/spending.png';
 
 const Navbar = () => {
   const { user } = useContext(UserDataContext);
@@ -83,7 +85,7 @@ const Navbar = () => {
               } px-2 rounded-lg flex items-center gap-2`
             }
           >
-            <img className="w-5" src="../../public/income.png" alt="Incomes" />
+            <img className="w-5" src={incomeImg} alt="Incomes" />
             <h3 className="leading-9">Incomes</h3>
           </NavLink>
 
@@ -97,7 +99,7 @@ const Navbar = () => {
           >
             <img
               className="w-5"
-              src="../../public/spending.png"
+              src={spendingImg}
               alt="Expenses"
             />
             <h3 className="leading-9">Expenses</h3>

@@ -102,7 +102,6 @@ const Home = () => {
     }
   }, [user]);
 
-  console.log(transactions);
 
   useEffect(() => {
     if (myChart.current && incomes.length > 0 && expenses.length > 0) {
