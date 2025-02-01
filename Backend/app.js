@@ -32,5 +32,9 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/incomes', incomeRoutes);
 
+app.get("/", (req, res) => {
+    res.send("Hello");
+})
+
 
 export default app;
