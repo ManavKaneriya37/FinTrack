@@ -12,7 +12,9 @@ const Login = () => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    const response = await axios.post("/api/users/login", formData);
+    const response = await axios.post("/api/users/login", formData, {
+      withCredentials: true
+    });
 
     if (response.data.statusCode === 200) {
       localStorage.setItem("token", response.data.store.token);

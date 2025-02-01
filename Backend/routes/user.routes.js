@@ -12,7 +12,10 @@ import {verifyUser} from '../middlewares/auth.middleware.js'
 
 const router = Router();
 
-router.route('/register').post(registerUser);
+router.route('/register', (req, res) => {
+    console.log("Request received")
+    console.log("Headers: ", req.headers)
+}).post(registerUser);
 router.route('/login').post(loginUser);
 router.route('/current-user').get(verifyUser, getCurrentUser);
 router.route('/logout').get(verifyUser, logoutUser)

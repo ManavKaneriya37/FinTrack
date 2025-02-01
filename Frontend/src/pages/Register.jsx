@@ -12,7 +12,9 @@ const Register = () => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    const response = await axios.post("/api/users/register", formData);
+    const response = await axios.post("/api/users/register", formData, {
+      withCredentials: true, // Ensures cookies are sent and received
+  });
 
     if (response.data.statusCode === 201) {
       localStorage.setItem("token", response.data.store.token);
