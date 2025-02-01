@@ -24,13 +24,7 @@ import cors from 'cors';
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser());
-app.use(cors(
-    {
-        origin: ["https://fin-track-front.vercel.app"],
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true,
-    }
-));
+app.use(cors());
 
 
 app.use('/api/users', userRoutes);
