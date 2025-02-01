@@ -11,7 +11,7 @@ const CreateTransactoinModal = ({ tag = "Transaction" }) => {
 
   useEffect(() => {
     axios
-      .get("/api/projects/get-all", {
+      .get(`${import.meta.env.VITE_API_URL}/api/projects/get-all`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -29,7 +29,7 @@ const CreateTransactoinModal = ({ tag = "Transaction" }) => {
   useEffect(() => {
     if (selectedProject) {
       axios
-        .get(`/api/projects/get/${selectedProject}`, {
+        .get(`${import.meta.env.VITE_API_URL}/api/projects/get/${selectedProject}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -54,7 +54,7 @@ const CreateTransactoinModal = ({ tag = "Transaction" }) => {
     }
 
     axios
-      .post(`/api/${tag}s/create`, formData, {
+      .post(`${import.meta.env.VITE_API_URL}/api/${tag}s/create`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

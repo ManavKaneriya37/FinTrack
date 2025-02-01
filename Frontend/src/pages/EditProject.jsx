@@ -10,7 +10,7 @@ const EditProject = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/projects/get/${projectId}`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/projects/get/${projectId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -30,7 +30,7 @@ const EditProject = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("/api/projects/update", projectData, {
+      .post(`${import.meta.env.VITE_API_URL}/api/projects/update`, projectData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

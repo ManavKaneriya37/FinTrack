@@ -115,7 +115,7 @@ const Income = () => {
 
   const handleIncomeDelete = (income) => {
     axios
-      .post(`/api/incomes/delete`, {
+      .post(`${import.meta.env.VITE_API_URL}/api/incomes/delete`, {
         id: income._id,
       })
       .then((response) => {

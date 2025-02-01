@@ -8,7 +8,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     axios
-      .get("/api/users/current-user", {
+      .get(`${import.meta.env.VITE_API_URL}/api/users/current-user`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -28,7 +28,7 @@ const EditProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("/api/users/update-profile", profileData, {
+      .post(`${import.meta.env.VITE_API_URL}/api/users/update-profile`, profileData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

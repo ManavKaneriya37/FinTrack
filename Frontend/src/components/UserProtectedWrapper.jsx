@@ -15,7 +15,7 @@ const UserProtectedWrapper = ({ children }) => {
     }
 
     axios
-      .get("/api/users/current-user", {
+      .get(`${import.meta.env.VITE_API_URL}/api/users/current-user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

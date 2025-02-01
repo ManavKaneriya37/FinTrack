@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     axios
-      .get("/api/users/logout", {
+      .get(`${import.meta.env.VITE_API_URL}/api/users/logout`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

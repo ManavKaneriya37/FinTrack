@@ -50,7 +50,7 @@ const Home = () => {
   useEffect(() => {
     if (user) {
       axios
-        .get("/api/users/transactions/all", {
+        .get(`${import.meta.env.VITE_API_URL}/api/users/transactions/all`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -64,7 +64,7 @@ const Home = () => {
 
       axios
         .post(
-          "/api/incomes/all/get-incomes",
+          `${import.meta.env.VITE_API_URL}/api/incomes/all/get-incomes`,
           {
             userId: user?._id,
           },
@@ -83,7 +83,7 @@ const Home = () => {
 
       axios
         .post(
-          "/api/expenses/all/get-expenses",
+          `${import.meta.env.VITE_API_URL}/api/expenses/all/get-expenses`,
           {
             userId: user?._id,
           },

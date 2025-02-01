@@ -38,7 +38,7 @@ const Projects = () => {
       userId: user._id,
     };
     axios
-      .post("/api/projects/create", projectData, {
+      .post(`${import.meta.env.VITE_API_URL}/api/projects/create`, projectData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

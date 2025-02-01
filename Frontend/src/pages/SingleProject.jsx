@@ -15,7 +15,7 @@ const SingleProject = () => {
   useEffect(() => {
     axios
       .post(
-        "/api/incomes/get-incomes",
+        `${import.meta.env.VITE_API_URL}/api/incomes/get-incomes`,
         { projectId: project._id },
         {
           headers: {
@@ -34,7 +34,7 @@ const SingleProject = () => {
 
     axios
       .post(
-        "/api/expenses/get-expenses",
+        `${import.meta.env.VITE_API_URL}/api/expenses/get-expenses`,
         { projectId: project._id },
         {
           headers: {

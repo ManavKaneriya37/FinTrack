@@ -70,7 +70,7 @@ const Expense = () => {
 
   useEffect(() => {
     axios
-      .get("/api/users/current-user", {
+      .get(`${import.meta.env.VITE_API_URL}/api/users/current-user`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -87,7 +87,7 @@ const Expense = () => {
     if (user) {
       axios
         .post(
-          "/api/expenses/user/get-expenses",
+          `${import.meta.env.VITE_API_URL}/api/expenses/user/get-expenses`,
           {
             userId: user._id,
           },
@@ -105,7 +105,7 @@ const Expense = () => {
         });
 
       axios
-        .post("/api/expenses/get-total", {
+        .post(`${import.meta.env.VITE_API_URL}/api/expenses/get-total`, {
           userId: user._id,
         })
         .then((response) => {

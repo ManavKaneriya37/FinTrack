@@ -25,7 +25,7 @@ const Transactions = () => {
   useEffect(() => {
     axios
       .get(
-        "/api/users/transactions/general",
+        `${import.meta.env.VITE_API_URL}/api/users/transactions/general`,
         {},
         {
           headers: {
@@ -43,7 +43,7 @@ const Transactions = () => {
 
   const handleTransactionDelete = (transaction) => {
     axios
-      .post(`/api/${transaction.type}s/delete`, {
+      .post(`${import.meta.env.VITE_API_URL}/api/${transaction.type}s/delete`, {
         id: transaction._id,
       })
       .then((response) => {

@@ -12,9 +12,13 @@ const Login = () => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/login`, formData, {
-      withCredentials: true
-    });
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/users/login`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
 
     if (response.data.statusCode === 200) {
       localStorage.setItem("token", response.data.store.token);
