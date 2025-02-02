@@ -102,30 +102,30 @@ const SingleProject = () => {
         </button>
       </div>
       <p className="text-xs text-gray-600 ml-7">{project.description}</p>
-      <section className="w-full h-fit flex gap-3 items-center justify-between mt-3">
+      <section className="w-full h-fit md:flex flex-col gap-3 items-center justify-between mt-3">
         <div className="relative overflow-hidden h-28 flex-grow px-4 py-3 bg-emerald-100 rounded-lg">
-          <h1 className="text-xl font-semibold text-center">Incomes</h1>
-          <div className="h-full w-full flex items-center text-3xl justify-center relative text-green-500">
+          <h1 className="md:text-xl text-lg font-semibold text-center">Incomes</h1>
+          <div className="h-full w-full flex items-center md:text-3xl text-lg justify-center relative text-green-500">
             {totalIncome || 0}
           </div>
         </div>
         <div className="h-28 flex-grow px-4 py-3 bg-rose-100 rounded-lg">
-          <h1 className="text-xl font-semibold text-center">Expenses</h1>
-          <div className="h-full w-full flex items-center text-3xl justify-center relative text-red-500">
+          <h1 className="md:text-xl text-lg font-semibold text-center">Expenses</h1>
+          <div className="h-full w-full flex items-center md:text-3xl text-lg justify-center relative text-red-500">
             {totalExpense || 0}
           </div>
         </div>
         <div className="h-28 flex-grow px-4 py-3 bg-gray-100 rounded-lg">
           <h1 className="text-xl font-semibold text-center">Balance</h1>
-          <div className="h-full w-full flex items-center text-3xl justify-center relative text-gray-500">
+          <div className="h-full w-full flex items-center md:text-3xl text-lg justify-center relative text-gray-500">
             {totalIncome - totalExpense || 0}
           </div>
         </div>
       </section>
       <div className="mt-6">
-        <h1 className="text-lg">Recent Transactions</h1>
-        <div className="flex items-start gap-10 w-full h-fit py-3">
-          <div className="w-1/2 h-full">
+        <h1 className="md:text-lg text-sm">Recent Transactions</h1>
+        <div className="md:flex flex-col items-start gap-10 w-full h-fit py-3">
+          <div className="md:w-1/2 w-full md:px-0 px-5 h-full">
             <article className="w-full flex flex-col gap-3 justify-between">
               {expenses && expenses.length > 0 ? (
                 expenses.map((expense) => (
@@ -142,7 +142,7 @@ const SingleProject = () => {
               )}
             </article>
           </div>
-          <div className="w-1/2 h-full">
+          <div className="md:w-1/2 w-full md:px-0 px-5 h-full">
             <article className="w-full flex flex-col gap-3 justify-between">
               {incomes && incomes.length > 0 ? (
                 incomes.map((income) => (

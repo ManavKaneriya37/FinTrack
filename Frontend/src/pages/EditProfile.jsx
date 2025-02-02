@@ -50,13 +50,13 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="home p-5 h-full w-full overflow-hidden relative">
+    <div className="home md:p-5 h-full w-full overflow-hidden relative">
       {loading ? (
         <Loading loading={loading} />
       ) : (
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded pt-6 pb-8 mb-4 px-10"
+          className="bg-white rounded pt-6 pb-8 mb-4 md:px-10 px-3"
         >
           <div className="mb-4">
             <label

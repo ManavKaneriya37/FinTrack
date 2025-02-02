@@ -194,7 +194,7 @@ const Home = () => {
             <Loading loading={loading} />
           </div>
         ) : (
-          <div className="flex items-center justify-between h-full w-full">
+          <div className="md:flex flex-col items-center justify-between h-full w-full">
             <aside className="w-full h-full bg-white flex flex-col gap-2">
               <div className="transaction chart min-h-3/5 h-3/5 w-full relative bg-white">
                 <h1 className="text-xl p-2 font-semibold opacity-80">
@@ -227,9 +227,9 @@ const Home = () => {
                 </article>
               </div>
             </aside>
-            <aside className="w-[60%] h-full bg-white flex flex-col gap-5 px-3">
+            <aside className="md:w-[60%] md:mt-0 mt-32 h-full bg-white flex flex-col gap-5 px-3">
               <div>
-                <h1 className="text-xl p-2 font-semibold opacity-80">
+                <h1 className="text-xl md:my-0 my-8 p-2 font-semibold opacity-80">
                   Recent Transactions
                 </h1>
                 {transactions.length > 0 ? (
