@@ -9,7 +9,7 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
         const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
 
         if(!token) {
-            throw new ApiError(401, 'Unauthorized request');
+            throw new ApiError(401, 'Unauthorized request with no token');
         }
 
         const isBlackListed = await redisClient.get(token);

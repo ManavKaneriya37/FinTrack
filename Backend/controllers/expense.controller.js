@@ -52,6 +52,7 @@ const createExpense = asyncHandler(async (req, res) => {
 const deleteExpense = asyncHandler(async (req, res) => {
   try {
     const { id } = req.body;
+    console.log(id)
 
     if (!id) {
       throw new ApiError(400, "Expense Id required.");
