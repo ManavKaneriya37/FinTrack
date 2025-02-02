@@ -124,7 +124,7 @@ const SingleProject = () => {
       </section>
       <div className="mt-6">
         <h1 className="md:text-lg text-sm">Recent Transactions</h1>
-        <div className="md:flex flex-col items-start gap-10 w-full h-fit py-3">
+        <div className="md:flex items-start gap-10 w-full h-fit py-3">
           <div className="md:w-1/2 w-full md:px-0 px-5 h-full">
             <article className="w-full flex flex-col gap-3 justify-between">
               {expenses && expenses.length > 0 ? (

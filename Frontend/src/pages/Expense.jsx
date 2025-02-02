@@ -219,11 +219,11 @@ const Expense = () => {
                       {expense?.project?.name}
                     </div>
                   )}
-                  <div>{expense?.tag}</div>
+                  <div className="md:text-base text-sm">{expense?.tag}</div>
                 </div>
 
                 <div className="text-center opacity-60 text-gray-500/70 text-sm">
-                  <p className="italic text-xs">
+                  <p className="italic md:text-xs text-[10px]">
                     {expense?.createdAt?.split("T")[0]}
                   </p>
                   <p>{expense?.category}</p>

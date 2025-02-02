@@ -15,7 +15,7 @@ const CreateProjectModal = ({handler, ref}) => {
           isModalOpen ? "" : "hidden"
         } absolute z-10 h-full w-full bg-zinc-300/60 backdrop-blur-sm top-0 left-0 flex items-center justify-center`}
       >
-        <div className="bg-white rounded-lg min-w-2/6 h-fit w-[30vw] py-5 relative">
+        <div className="bg-white rounded-lg md:min-w-2/6 h-fit md:w-[30vw] py-5 relative">
           <div
             onClick={() => setIsModalOpen(false)}
             className="absolute top-0 right-1 cursor-pointer p-2 text-xl justify-self-end"

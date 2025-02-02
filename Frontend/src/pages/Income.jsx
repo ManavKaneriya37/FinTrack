@@ -222,11 +222,11 @@ const Income = () => {
                       {income?.project?.name}
                     </div>
                   )}
-                  <div>{income?.tag}</div>
+                  <div className="md:text-base text-sm">{income?.tag}</div>
                 </div>
 
                 <div className="text-center opacity-60 text-gray-500/70 flex flex-col text-sm">
-                  <p className="italic text-xs">
+                  <p className="italic md:text-xs text-[10px]">
                     {income?.createdAt?.split("T")[0]}
                   </p>
                   <p>{income?.category}</p>

@@ -77,11 +77,11 @@ const Transactions = () => {
                     transaction.type == "income"
                       ? "text-emerald-400"
                       : "text-red-400"
-                  } w-1/4`}
+                  } w-1/4 md:text-base text-sm`}
                 >
                   {transaction.tag}
                 </div>
-                <div className="text-center opacity-60 text-gray-500">
+                <div className="text-center opacity-60 text-gray-500 md:text-base text-xs">
                   {transaction?.createdAt?.split("T")[0]}
                 </div>
                 <div
@@ -91,7 +91,7 @@ const Transactions = () => {
                       : "text-red-400"
                   } flex items-center gap-3`}
                 >
-                  <div className="">{transaction.amount}</div>{" "}
+                  <div className="md:mx-0 mx-1">{transaction.amount}</div>{" "}
                   <i
                     onClick={() =>
                       setTransactionMenu(
