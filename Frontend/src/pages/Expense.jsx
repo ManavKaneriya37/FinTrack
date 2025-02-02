@@ -92,6 +92,7 @@ const Expense = () => {
 
   useEffect(() => {
     if (user) {
+      console.log(localStorage.getItem("token"))
       axios
         .post(
           `${import.meta.env.VITE_API_URL}/api/expenses/user/get-expenses`,
