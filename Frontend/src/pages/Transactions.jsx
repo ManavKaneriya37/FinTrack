@@ -47,6 +47,10 @@ const Transactions = () => {
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/${transaction.type}s/delete`, {
         id: transaction._id,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
       })
       .then((response) => {
         if (response.data.statusCode === 200) {

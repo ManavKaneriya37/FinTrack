@@ -37,7 +37,7 @@ const Navbar = () => {
       <div className="absolute top-0 left-2 md:hidden block">
         <i
           onClick={() => setNavbarOpen((prev) => !prev)}
-          class={`${navbarOpen ? ' ri-menu-2-line ' : 'ri-close-line'}`}
+          className={`text-xl ${navbarOpen ? ' ri-menu-2-line ' : 'ri-close-line'}`}
         ></i>
       </div>
         <section className={` ${navbarOpen ? 'hidden' : 'md:block' } absolute md:relative z-40 p-4 homeMenuDriven h-full md:w-[22vw]`}>
