@@ -92,7 +92,6 @@ const Expense = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(localStorage.getItem("token"))
       axios
         .post(
           `${import.meta.env.VITE_API_URL}/api/expenses/user/get-expenses`,
@@ -130,6 +129,10 @@ const Expense = () => {
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/expenses/delete`, {
         id: expense._id,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
       })
       .then((response) => {
         if (response.data.statusCode === 200) {
