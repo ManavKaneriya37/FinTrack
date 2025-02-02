@@ -144,7 +144,7 @@ const Projects = () => {
               projects.map((project) => (
                 <div
                   key={project._id}
-                  className="bg-neutral-100/40 hover:bg-neutral-100 ease duration-100 relative rounded-md p-2 md:flex flex-col items-center md:justify-between gap-5"
+                  className="bg-neutral-100/40 hover:bg-neutral-100 ease duration-100 relative rounded-md p-2 flex items-center justify-between gap-5"
                 >
                   <h1
                     onClick={() => goToProject(project._id)}
@@ -205,7 +205,7 @@ const Projects = () => {
               </div>
             )}
           </div>
-        )} 
+        )}
       </div>
     </div>
   );

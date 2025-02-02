@@ -102,7 +102,7 @@ const SingleProject = () => {
         </button>
       </div>
       <p className="text-xs text-gray-600 ml-7">{project.description}</p>
-      <section className="w-full h-fit md:flex flex-col gap-3 items-center justify-between mt-3">
+      <section className="w-full h-fit md:flex gap-3 items-center justify-between mt-3">
         <div className="relative overflow-hidden h-28 flex-grow px-4 py-3 bg-emerald-100 rounded-lg">
           <h1 className="md:text-xl text-lg font-semibold text-center">Incomes</h1>
           <div className="h-full w-full flex items-center md:text-3xl text-lg justify-center relative text-green-500">

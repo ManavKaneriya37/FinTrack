@@ -194,7 +194,7 @@ const Home = () => {
             <Loading loading={loading} />
           </div>
         ) : (
-          <div className="md:flex flex-col items-center justify-between h-full w-full">
+          <div className="md:flex items-center justify-between h-full w-full">
             <aside className="w-full h-full bg-white flex flex-col gap-2">
               <div className="transaction chart min-h-3/5 h-3/5 w-full relative bg-white">
                 <h1 className="text-xl p-2 font-semibold opacity-80">
