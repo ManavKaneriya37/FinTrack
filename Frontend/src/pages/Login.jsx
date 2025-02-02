@@ -26,13 +26,12 @@ const Login = () => {
     if (response.data.statusCode === 200) {
       localStorage.setItem("token", response.data.store.token);
       setUser(response.data.store.user);
-      setLoading(false);
       navigate("/");
     } else {
-      setLoading(false);
       alert(response.data.message);
     }
-
+    
+    setLoading(false);
     formRef.current.reset();
   };
 
