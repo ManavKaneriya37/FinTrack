@@ -28,6 +28,9 @@ const Login = () => {
       setUser(response.data.store.user);
       setLoading(false);
       navigate("/");
+    } else {
+      setLoading(false);
+      alert(response.data.message);
     }
 
     formRef.current.reset();
