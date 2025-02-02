@@ -153,7 +153,7 @@ const Expense = () => {
       <CreateTransactionModal tag="expense" />
       <div className="my-5">
         <h1 className="text-2xl text-center">Total Expenses</h1>
-        <h1 className="text-3xl text-center text-rose-400">₹{expensesTotal}</h1>
+        <h1 className="text-3xl text-center text-rose-400"> {expensesTotal}</h1>
       </div>
       {loading ? (
         <Loading loading={loading} />
@@ -229,7 +229,7 @@ const Expense = () => {
                   <p>{expense?.category}</p>
                 </div>
                 <div className={`flex items-center gap-3`}>
-                  <div className="">₹{expense.amount}</div>
+                  <div className=""> {expense.amount}</div>
                   <i
                     onClick={() =>
                       setExpenseMenu(

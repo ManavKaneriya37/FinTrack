@@ -132,7 +132,7 @@ const SingleProject = () => {
                   <div className="w-full flex items-center gap-10 justify-between bg-red-200 rounded-md px-2 py-1">
                     <p>{expense.tag}</p>
                     <p>{expense?.category}</p>
-                    <p>₹{expense.amount}</p>
+                    <p> {expense.amount}</p>
                   </div>
                 ))
               ) : (
@@ -149,7 +149,7 @@ const SingleProject = () => {
                   <div className="w-full flex gap-10 items-center justify-between bg-green-200 rounded-md px-2 py-1">
                     <p>{income.tag}</p>
                     <p>{income?.category}</p>
-                    <p>₹{income.amount}</p>
+                    <p> {income.amount}</p>
                   </div>
                 ))
               ) : (

@@ -152,7 +152,7 @@ const Income = () => {
       <div className="my-5">
         <h1 className="text-2xl text-center">Total Incomes</h1>
         <h1 className="text-3xl text-center text-emerald-500">
-          ₹{incomesTotal || 0}
+           {incomesTotal || 0}
         </h1>
       </div>
       {loading ? (
@@ -232,7 +232,7 @@ const Income = () => {
                   <p>{income?.category}</p>
                 </div>
                 <div className={`flex items-center gap-3`}>
-                  <div className="">₹{income.amount}</div>
+                  <div className=""> {income.amount}</div>
                   <i
                     onClick={() =>
                       setIncomeMenu(
