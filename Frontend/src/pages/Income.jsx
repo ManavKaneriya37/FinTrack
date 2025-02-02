@@ -113,6 +113,10 @@ const Income = () => {
       axios
         .post(`${import.meta.env.VITE_API_URL}/api/incomes/get-total`, {
           userId: user._id,
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
         })
         .then((response) => {
           setIncomesTotal(response.data.store);

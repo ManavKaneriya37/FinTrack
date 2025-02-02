@@ -115,6 +115,10 @@ const Expense = () => {
       axios
         .post(`${import.meta.env.VITE_API_URL}/api/expenses/get-total`, {
           userId: user._id,
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
         })
         .then((response) => {
           setExpensesTotal(response.data.store);
