@@ -37,8 +37,8 @@ const Login = () => {
 
   return (
     <>
-      <div className='flex items-centerp-5 h-screen w-full bg-no-repeat bg-cover bg-[url("https://img.freepik.com/premium-vector/stock-market-investment-trading-graph-graphic-concept-suitable-financial-investment_258787-30.jpg?w=996")]'>
-        <aside className="h-full w-1/2 flex items-center justify-center">
+      <div className='flex flex-col md:flex-row items-center p-5 h-screen w-full bg-no-repeat bg-cover bg-[url("https://img.freepik.com/premium-vector/stock-market-investment-trading-graph-graphic-concept-suitable-financial-investment_258787-30.jpg?w=996")]'>
+        <aside className="h-full w-full md:w-1/2 flex items-center justify-center">
           <div className="w-2/3">
             <h1 className="registerTitle text-emerald-500 text-5xl text-center font-semibold">
               FinTrack
@@ -52,8 +52,8 @@ const Login = () => {
         {loading ? (
           <Loading loading={loading} />
         ) : (
-          <section className="w-1/2 flex items-center justify-center">
-            <div className="h-fit w-[62%] p-4 py-12 rounded-xl bg-white shadow-lg shadow-black/50">
+          <section className="w-full md:w-1/2 flex items-center justify-center">
+            <div className="h-fit w-full md:w-[62%] p-4 py-12 rounded-xl bg-white shadow-lg shadow-black/50">
               <h1 className="text-center text-3xl font-semibold mb-10">
                 Login
               </h1>
