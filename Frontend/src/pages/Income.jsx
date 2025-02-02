@@ -131,6 +131,10 @@ const Income = () => {
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/incomes/delete`, {
         id: income._id,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
       })
       .then((response) => {
         if (response.data.statusCode === 200) {
