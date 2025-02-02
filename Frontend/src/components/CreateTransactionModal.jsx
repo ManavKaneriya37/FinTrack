@@ -66,7 +66,6 @@ const CreateTransactoinModal = ({ tag = "Transaction" }) => {
       })
       .then((response) => {
         if (response.data.statusCode === 201) {
-          createTransactoinRef.current.reset();
           setIsModalOpen(false);
           setLoading(false);
           location.reload();
